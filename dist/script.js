@@ -9,8 +9,19 @@ async function handleData() {
     preencherTabela(transacoes);
     preencherEstatisticas(transacoes);
 }
+function preencheLista(lista, containerId) {
+    const containerElement = document.getElementById(containerId);
+    if (containerElement) {
+        Object.keys(lista).forEach(key => {
+            containerElement.innerHTML += ` <p>${key}: ${lista[key]} </p>`;
+        });
+    }
+}
 function preencherEstatisticas(transacoes) {
     const data = new Estatisticas(transacoes);
+    console.log(data);
+    preencheLista(data.pagamento, 'pagamento');
+    preencheLista(data.status, 'status');
     const totalElement = document.querySelector("#total span");
     if (totalElement) {
         totalElement.innerText = data.total.toLocaleString('pt-BR', {
@@ -18,7 +29,10 @@ function preencherEstatisticas(transacoes) {
             currency: "BRL"
         });
     }
-    console.log(data.total);
+    const diaElement = document.querySelector("#melhorDia span");
+    if (diaElement) {
+        diaElement.innerText = data.melhorDia[0][0];
+    }
 }
 function preencherTabela(transacoes) {
     const tabela = document.querySelector("#transacoes tbody");
